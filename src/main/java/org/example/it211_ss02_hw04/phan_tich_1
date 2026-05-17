@@ -1,0 +1,238 @@
+1. Tổng quan SOAP và REST
+Tiêu chí	SOAP	REST
+Bản chất	Protocol	Architectural Style
+Định dạng dữ liệu	Chủ yếu XML	JSON, XML, text
+Transport	HTTP, SMTP, FTP, JMS	Chủ yếu HTTP
+Tính trạng thái	Có thể stateful	Stateless
+Hiệu suất	Chậm hơn	Nhanh hơn
+Độ phức tạp	Cao	Thấp
+Bảo mật	WS-Security mạnh	HTTPS + Token
+Phù hợp	Enterprise/Banking	Web/Mobile/Microservices
+2. Phân tích SOAP cho Legacy Core Banking
+Đặc điểm hệ thống Legacy
+
+Hệ thống core banking yêu cầu:
+
+độ tin cậy cực cao
+giao dịch tài chính an toàn
+distributed transaction
+audit/logging nghiêm ngặt
+chuẩn doanh nghiệp quốc tế
+Vì sao SOAP phù hợp?
+a. Bảo mật mạnh hơn REST
+
+SOAP hỗ trợ:
+
+WS-Security
+XML Encryption
+XML Signature
+SAML
+Message-level security
+
+Điều này cực kỳ quan trọng trong:
+
+giao dịch ngân hàng
+chuyển khoản
+thanh toán liên ngân hàng
+b. Hỗ trợ transaction tốt
+
+SOAP hỗ trợ:
+
+WS-AtomicTransaction
+WS-ReliableMessaging
+
+=> đảm bảo:
+
+transaction consistency
+rollback
+reliability
+
+Đây là yêu cầu sống còn của core banking.
+
+c. Contract rõ ràng bằng WSDL
+
+SOAP sử dụng:
+
+WSDL (Web Service Description Language)
+
+Giúp:
+
+định nghĩa contract chặt chẽ
+kiểm soát schema
+dễ tích hợp enterprise system
+
+Trong ngân hàng:
+
+contract stability rất quan trọng
+không được thay đổi tùy tiện.
+d. Reliability cao
+
+SOAP có:
+
+built-in error handling
+strict specification
+standard enterprise integration
+
+Phù hợp với:
+
+mainframe
+ESB
+hệ thống enterprise cũ.
+Nhược điểm SOAP
+Hiệu suất thấp
+
+SOAP dùng XML:
+
+<soap:Envelope>
+
+=> payload lớn hơn JSON nhiều.
+
+Kết quả:
+
+tốn bandwidth
+parsing chậm
+CPU cao
+Độ phức tạp cao
+
+Phải xử lý:
+
+WSDL
+XSD
+WS-* standards
+
+=> phát triển chậm hơn REST.
+
+Kết luận cho Legacy
+Khuyến nghị: Dùng SOAP
+
+Vì:
+
+bảo mật mạnh
+transaction support
+enterprise reliability
+compliance tốt hơn REST.
+3. Phân tích REST cho Microservices
+Đặc điểm hệ thống mới
+
+Microservices cần:
+
+scalability
+tốc độ cao
+phát triển nhanh
+mobile/web integration
+cloud-native
+Vì sao REST phù hợp?
+a. Hiệu suất cao
+
+REST thường dùng JSON:
+
+{
+  "id": 1,
+  "name": "Product"
+}
+
+JSON:
+
+nhẹ hơn XML
+parse nhanh
+ít bandwidth
+
+=> tối ưu cho:
+
+mobile app
+web app
+high traffic
+b. Stateless → dễ scale
+
+REST stateless:
+
+mỗi request độc lập
+server không lưu session
+
+=> cực kỳ phù hợp:
+
+Kubernetes
+Load Balancer
+Cloud scaling
+c. Phát triển nhanh
+
+REST:
+
+đơn giản
+ít cấu hình
+dễ debug bằng Postman
+
+Developer có thể:
+
+release nhanh
+CI/CD nhanh
+agile development tốt hơn.
+d. Tích hợp frontend/mobile dễ dàng
+
+JavaScript frontend:
+
+React
+Angular
+Vue
+Mobile Flutter/React Native
+
+đều tối ưu với JSON REST API.
+
+e. Tốt cho microservices architecture
+
+REST:
+
+lightweight
+loosely coupled
+service independence
+
+=> phù hợp:
+
+API Gateway
+service discovery
+container architecture.
+Nhược điểm REST
+Bảo mật không chuẩn hóa mạnh như SOAP
+
+REST chủ yếu dùng:
+
+HTTPS
+JWT
+OAuth2
+
+Không có:
+
+WS-Security
+message-level security built-in
+Không mạnh về distributed transaction
+
+REST:
+
+không hỗ trợ transaction chuẩn enterprise như SOAP.
+
+Microservices thường phải dùng:
+
+Saga Pattern
+Eventual Consistency
+Kết luận cho Microservices
+Khuyến nghị: Dùng REST
+
+Vì:
+
+hiệu suất cao
+scale tốt
+phát triển nhanh
+cloud-native
+mobile/web friendly.
+4. So sánh tổng hợp theo yêu cầu nghiệp vụ
+Yếu tố	SOAP	REST
+Hiệu suất	Thấp hơn	Cao hơn
+Payload	XML nặng	JSON nhẹ
+Scalability	Trung bình	Rất tốt
+Security	Rất mạnh	Tốt
+Distributed Transaction	Có	Hạn chế
+Phát triển nhanh	Chậm hơn	Nhanh
+Microservices	Không tối ưu	Rất phù hợp
+Legacy Enterprise	Rất phù hợp	Không tối ưu
+Mobile/Web	Kém tối ưu	Rất phù hợp
+Độ phức tạp	Cao	Thấp
